@@ -28,10 +28,10 @@ def calculate_score(current_features, baseline):
 
     # 判定メッセージ
     if total_score >= 80:
-        message = "良い姿勢です！"
+        message = "Good posture!"
     elif total_score >= 60:
-        message = "少し姿勢が崩れています"
+        message = "Posture slightly off. "
     else:
-        message = "姿勢を直してください！"
+        message = "Fix your posture!"
 
     return total_score, message

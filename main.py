@@ -51,6 +51,13 @@ def main():
             key = cv2.waitKey(1) & 0xFF
 
             if key == ord('c'):
+                print("3秒後にキャリブレーション開始します")
+                for i in range(3, 0, -1):
+                    ret, frame = cam.read_frame()
+                    cv2.putText(frame, f"Starting in {i}...", (10, 150),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
+                    cv2.imshow("Pose", frame)
+                    cv2.waitKey(1000)
                 print("キャリブレーション開始！3秒間良い姿勢で静止してください")
                 result = collect_features(pose, cam, seconds=3)
                 if result:

@@ -41,7 +41,7 @@ def save_calibration(features, db_path="data/calibration.db"):
             id INTEGER PRIMARY KEY,
             neck_angle REAL,
             shoulder_tilt REAL,
-            created_at TEXT DEFAULT (datetime('now'))
+            created_at TEXT DEFAULT (datetime('now', '+9 hours'))
         )
     """)
     cursor.execute("DELETE FROM calibration")
@@ -55,11 +55,14 @@ def save_calibration(features, db_path="data/calibration.db"):
 
 def load_calibration(db_path="data/calibration.db"):
     """基準値をSQLiteから読み込む"""
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT neck_angle, shoulder_tilt FROM calibration ORDER BY id DESC LIMIT 1")
-    row = cursor.fetchone()
-    conn.close()
-    if row:
-        return {"neck_angle": row[0], "shoulder_tilt": row[1]}
-    return None
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT neck_angle, shoulder_tilt FROM calibration ORDER BY id DESC LIMIT 1")
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return {"neck_angle": row[0], "shoulder_tilt": row[1]}
+        return None
+    except sqlite3.OperationalError:
+        return None
